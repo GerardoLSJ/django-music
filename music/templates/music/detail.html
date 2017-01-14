@@ -9,3 +9,22 @@
     <li> {{song.song_title}}</li>
     {% endfor %}
 </ul>
+<div style="width: 100px; height: 1px; border-color: red"></div>
+{% if error_message %}
+    <p> <strong>Error Message</strong></p>
+{% endif %}
+
+<form action="{% url 'music:favorite' album.id %}" method="POST">
+    {% csrf_token %}
+    {% for song in album.song_set.all %}
+        <input type="radio" id="song{{forloop.counter}}" name="song" value="{{song.id}}">
+        <label for="song{{forloop.counter}}">
+            {{song.song_title}}
+            {% if song.is_favorite %}
+            <img style="width: 20px;" src="https://cdn1.iconfinder.com/data/icons/messaging-3/48/Star-128.png" alt="">
+            {% endif %}
+        </label><br>
+    {% endfor %}
+    <input type="submit" value="favorite">
+
+</form>
